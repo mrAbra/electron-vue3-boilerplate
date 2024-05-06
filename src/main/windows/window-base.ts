@@ -14,6 +14,9 @@ abstract class WindowBase{
         this._browserWindow = null;
       });
     }
+    if (this._browserWindow) {
+      this._browserWindow.webContents.openDevTools();
+    }
 
     this.registerIpcMainHandler();
   }

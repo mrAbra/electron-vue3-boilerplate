@@ -4,6 +4,9 @@ import { defineConfig } from "vite";
 import Components from "unplugin-vue-components/vite";
 import { AntDesignVueResolver } from "unplugin-vue-components/resolvers";
 
+import AutoImport from 'unplugin-auto-import/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
 /**
  * https://vitejs.dev/config
  */
@@ -22,11 +25,12 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@views": path.join(__dirname, "views"),
+      "@": path.join(__dirname),
       "@lib": path.join(__dirname, "../lib"),
       "@file-download": path.join(__dirname, "../lib/file-download"),
       "@utils": path.join(__dirname, "../lib/utils"),
     },
+    extensions: ['.js', '.vue', '.json', '.css', '.node']
   },
   plugins: [
     vuePlugin(),
@@ -36,6 +40,9 @@ export default defineConfig({
           importStyle: false, // css in js
         }),
       ],
+    }),
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
     }),
   ],
 });

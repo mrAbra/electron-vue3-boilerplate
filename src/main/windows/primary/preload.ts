@@ -14,6 +14,17 @@ contextBridge.exposeInMainWorld("primaryWindowAPI", {
   onShowClosePrimaryWinMsgbox: (callback) => ipcRenderer.on("show-close-primary-win-msgbox", () => {
     callback();
   }),
+  //LandingPage
+  openWin: (data: any) => ipcRenderer.invoke("open-win", data),
+  //Monitor
+  readDevaddrsByGroup: (selectedGroup: any) => ipcRenderer.invoke("read-devaddrs-by-group", selectedGroup),
+  readLastDataByDevaddrs: (selectedDevaddrs: any, emulate: any) =>  ipcRenderer.invoke("read-last-data-by-devaddrs", selectedDevaddrs, emulate),
+  openMoreInfo: (id: any) => ipcRenderer.invoke("open-more-info", id),
+  //Form
+  readRowsFromDeviceTable: (columns: any ) => ipcRenderer.invoke("read-rows-from-device-table", columns),
+  setGroup: (selectedDevaddr: any, devgroup: any ) => ipcRenderer.invoke("set-group", selectedDevaddr, devgroup),
+  //Emulator
+  inserRowByDevaddr: (selectedDevaddr : any , generatedFeature: any ) => ipcRenderer.invoke('db-handle-insert-row-by-devaddr', selectedDevaddr, generatedFeature),
   asyncExitApp: () => ipcRenderer.invoke("async-exit-app"),
   minToTray: () => ipcRenderer.send("min-to-tray"),
   httpGetRequest: (url:string) => ipcRenderer.send("http-get-request", url),

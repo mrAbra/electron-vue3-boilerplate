@@ -70,7 +70,7 @@ function restartElectron(){
 }
 
 function copyStaticFiles(){
-  copyMainSubFiles("static");
+  //copyMainSubFiles("static");
 }
 
 /*
@@ -99,6 +99,7 @@ async function start(){
   
   const mainFolder = path.join(__dirname, "../src/main");
   console.log(mainFolder);
+  /*
   chokidar.watch(mainFolder, {
     cwd: mainFolder,
   })
@@ -110,6 +111,7 @@ async function start(){
 
       restartElectron();
     });
+    */
 }
 
 start();

@@ -9,11 +9,15 @@ class PrimaryWindow extends WindowBase{
   constructor(){
     // 调用WindowBase构造函数创建窗口
     super({
-      width: 800,
-      height: 600,
+      width: 1000,
+      height: 800,
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
-      },
+        nodeIntegration: true,
+        webSecurity: false,
+        devTools: process.env.NODE_ENV === 'development',
+        scrollBounce: process.platform === 'darwin'
+      }
     });
 
     // 拦截close事件

@@ -1,4 +1,4 @@
-import { BrowserWindow, app, dialog, session, Menu } from "electron";
+import { BrowserWindow, app, dialog, session, Menu, crashReporter } from "electron";
 import log from "electron-log/main";
 import PrimaryWindow from "./windows/primary";
 import { CreateAppTray } from "./tray";
@@ -14,11 +14,13 @@ Menu.setApplicationMenu(null);
 const gotLock = app.requestSingleInstanceLock();
 
 // 如果程序只允许启动一个实例时，第二个实例启动后会直接退出
-if(!gotLock && appState.onlyAllowSingleInstance){
+if (!gotLock && appState.onlyAllowSingleInstance) {
   app.quit();
-}else{
+} else {
+  console.log(app.getPath('crashDumps'))
+  crashReporter.start({ submitURL: '', uploadToServer: false })
   app.whenReady().then(() => {
-    if(!appState.initialize()){
+    if (!appState.initialize()) {
       dialog.showErrorBox("App initialization failed", "The program will exit after click the OK button.",);
       app.exit();
       return;
@@ -27,16 +29,17 @@ if(!gotLock && appState.onlyAllowSingleInstance){
     log.info("App initialize ok");
 
     appState.primaryWindow = new PrimaryWindow();
-    appState.tray = CreateAppTray();
-
+    //appState.tray = CreateAppTray();
+    /*
     session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
       callback({
         responseHeaders: {
           ...details.responseHeaders,
-          "Content-Security-Policy": [ "script-src 'self'" ],
+          "Content-Security-Policy": ["script-src 'self'"],
         },
       });
     });
+    */
   });
 
   // 当程序的第二个实例启动时，显示第一个实例的主窗口
@@ -45,14 +48,14 @@ if(!gotLock && appState.onlyAllowSingleInstance){
   });
 
   app.on("activate", () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-    if(BrowserWindow.getAllWindows().length === 0)
+    // On macOS it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (BrowserWindow.getAllWindows().length === 0)
       appState.primaryWindow = new PrimaryWindow();
   });
 
   app.on("window-all-closed", () => {
-    if(process.platform !== "darwin")
+    if (process.platform !== "darwin")
       app.quit();
   });
 

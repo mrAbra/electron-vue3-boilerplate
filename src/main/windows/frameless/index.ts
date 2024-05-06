@@ -9,7 +9,7 @@ class FramelessWindow extends WindowBase{
     super({
       width: 600,
       height: 360,
-      frame: false,
+      frame: true,
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
       },
@@ -17,7 +17,7 @@ class FramelessWindow extends WindowBase{
       parent: appState.primaryWindow?.browserWindow as BrowserWindow,
     });
 
-    this.openRouter("/frameless-sample");
+    //this.openRouter("/frameless-sample");
   }
 
   protected registerIpcMainHandler(): void{  
